@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Final Project</title>
+
+    <!-- A-Frame lib super-machinery -->
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+    <script src="https://unpkg.com/aframe-event-set-component@4.2.1/dist/aframe-event-set-component.min.js"></script> 
+    <script src="https://unpkg.com/aframe-proxy-event-component/dist/aframe-proxy-event-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script> 
+    <script src="https://cdn.jsdelivr.net/gh/n5ro/aframe-physics-system@v4.0.1/dist/aframe-physics-system.min.js"></script>
+    
+    <!-- Flashlight script -->
+    <script src="scripts/flashlight.js"></script>
+
+    <!-- Room script -->
+    <script src="scripts/enviroment.js"></script>
+
+    <!-- Objectives script -->
+    <script src="scripts/objectives.js"></script>
+
+</head>
+<body>
+
+    <!-- Reference here, try to learn it
+        =====================================
+        |                                   |
+        |  https://jsfiddle.net/1349mqn0/3/ |
+        |                                   |
+        =====================================
+    -->
+
+    <a-scene id="scene" physics>
+        <a-asset>
+            <a-asset-item id="asset_flashlight" src="assets/model/simple_lowpoly_flashlight/scene.gltf"></a-asset-item>
+            <a-asset-item id="asset_jerry_can" src="assets/model/jerry_can/scene.gltf"></a-asset-item>
+            <a-asset-item id="asset_generator" src="assets/model/small_generator/scene.gltf"></a-asset-item>
+            <a-asset-item id="asset_toolbox" src="assets/model/old_tool_box/scene.gltf"></a-asset-item>
+
+            <img src="assets/img/test_wall.png" id="wall">
+            <img src="assets/img/floor/Stone_tiles_4K_Base.png" id="floor_base">
+            <img src="assets/img/floor/Stone_tiles_4K_Normal.png" id="floor_normal">
+        </a-asset>
+        <a-camera id="camera" position="0 1.6 0">
+            <a-cursor></a-cursor>
+        </a-camera>
+
+        <!-- Custom Lighting: Ambient + Directional -->
+        <a-entity light="intensity: 0.1; castShadow: true" position="-0.5 1 1" data-aframe-default-light="" aframe-injected=""></a-entity>
+        <a-entity light="intensity: 0.1 color: #BBB; type: ambient" data-aframe-default-light="" aframe-injected=""></a-entity>
+
+        <!-- Walls? -->
+        <a-entity
+            id="game_env"
+            game_enviroment
+        ></a-entity>
+
+        <!-- Skies? -->
+        <a-sky color="#000"></a-sky>
+
+        <!-- Floor and stuff -->
+        <a-entity>
+            <!-- Floor down -->
+            <a-plane
+                static-body
+                position="12 0 -17" 
+                rotation="-90 0 0" 
+                width="30" 
+                height="30" 
+                
+                src="#floor_base"
+                repeat="30 30"
+                normal-map="#floor_normal"
+                normal-texture-repeat="30 30"
+            ></a-plane>
+
+            <!-- Ceiling up -->
+            <a-plane
+                static-body
+                position="12 4 -17" 
+                rotation="90 0 0" 
+                width="30" 
+                height="30" 
+                color="#7BC8A4"
+            ></a-plane>
+            
+            <!-- Wall left -->
+            <!-- <a-plane
+                static-body
+                position="5 2 0" 
+                rotation="0 -90 0" 
+                width="10" 
+                height="4" 
+                color="#7BC8A4"
+            ></a-plane> -->
+            
+            <!-- Wall right -->
+            <!-- <a-plane
+                static-body
+                position="-5 2 0" 
+                rotation="0 90 0" 
+                width="10" 
+                height="4" 
+                color="#7BC8A4"
+            ></a-plane> -->
+
+            <!-- Wall front -->
+            <!-- <a-plane
+                static-body
+                position="0 2 -5" 
+                rotation="0 0 0" 
+                width="10" 
+                height="4" 
+                color="#7BC8A4"
+            ></a-plane>   -->
+
+            <!-- Wall back -->
+            <!-- <a-plane
+                static-body
+                position="0 2 5" 
+                rotation="180 0 0" 
+                width="10" 
+                height="4" 
+                color="#7BC8A4"
+            ></a-plane>  -->
+        </a-entity>
+        
+        <a-entity
+            id="flashlightobject"
+            gltf-model="#asset_flashlight"
+            scale="0.0002 0.0002 0.0002"
+            light="
+                type: spot;
+                angle: 45;
+                penumbra: 0.6;
+                distance: 8;
+                target: #flashlightfront;
+            "
+            rotation="90 0 90"
+            flashlight 
+            dynamic-body="
+                shape: sphere;
+            "
+            position="24 .5 -6"
+        >
+            <a-entity
+                id="flashlightfront"
+                position="0 2 0"
+            ></a-entity>
+        </a-entity>
+
+        <a-entity
+            gltf-model="#asset_generator"
+            scale="0.005 0.005 0.005"
+            rotation="0 -90 0"
+            position="24.5 0 -8"
+            static-body
+        ></a-entity>
+
+    </a-scene>
+</body>
+</html>
