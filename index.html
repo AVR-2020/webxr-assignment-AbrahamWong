@@ -13,6 +13,8 @@
     <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script> 
     <script src="https://cdn.jsdelivr.net/gh/n5ro/aframe-physics-system@v4.0.1/dist/aframe-physics-system.min.js"></script>
     
+    <script src="https://unpkg.com/super-hands@3.0.1/dist/super-hands.min.js"></script> 
+    
     <!-- Flashlight script -->
     <script src="scripts/flashlight.js"></script>
 
@@ -33,20 +35,72 @@
         =====================================
     -->
 
+    <script>
+        AFRAME.registerComponent("navlog",{
+            init:function() {
+                let el = this.el;
+                let flashlight = document.querySelector("#flashlightobject");
+                el.addEventListener('navigation-start', function() {
+                    console.log("%cStart", "font-size: 2em; color: green;");
+                    console.log(`${el.getAttribute("position").x}\n${el.getAttribute("position").y}\n${el.getAttribute("position").z}`);
+                });
+                el.addEventListener('navigation-end', function() {
+                    console.log("%cEnd", "font-size: 2em; color: red;");
+                    console.log(`${el.getAttribute("position").x}\n${el.getAttribute("position").y}\n${el.getAttribute("position").z}`);
+                    console.log(flashlight.getAttribute("position"))
+                });
+            }
+        });
+    </script>
+
     <a-scene id="scene" physics>
         <a-asset>
             <a-asset-item id="asset_flashlight" src="assets/model/simple_lowpoly_flashlight/scene.gltf"></a-asset-item>
             <a-asset-item id="asset_jerry_can" src="assets/model/jerry_can/scene.gltf"></a-asset-item>
-            <a-asset-item id="asset_generator" src="assets/model/small_generator/scene.gltf"></a-asset-item>
+            <a-asset-item id="asset_generator" src="assets/model/generator/scene.gltf"></a-asset-item>
             <a-asset-item id="asset_toolbox" src="assets/model/old_tool_box/scene.gltf"></a-asset-item>
 
             <img src="assets/img/test_wall.png" id="wall">
-            <img src="assets/img/floor/Stone_tiles_4K_Base.png" id="floor_base">
-            <img src="assets/img/floor/Stone_tiles_4K_Normal.png" id="floor_normal">
+            
+            <img src="assets/img/floor/mosaic-floor.jpg" id="mosaic_floor">
+            
+            <!-- Gate -->
+                <!-- Side -->
+            <a-mixin
+                id="gate_side"
+                geometry="" 
+                scale="0.5 4 2"
+            ></a-mixin>
+
+                <!-- Up -->
+            <a-mixin
+                id="gate_up"
+                geometry="" 
+                scale="1 2 2"
+            ></a-mixin>
+
+                <!-- The gate -->
+            <a-mixin 
+                id="gate_door" 
+                geometry="" 
+                scale="1 2 0.6"
+            ></a-mixin>
+
         </a-asset>
-        <a-camera id="camera" position="0 1.6 0">
-            <a-cursor></a-cursor>
-        </a-camera>
+
+        <a-entity 
+            id="camera"    
+            navlog 
+            movement-controls="controls: checkpoint;" 
+            checkpoint-controls="mode: animate; animateSpeed: 5;"
+            >
+            <a-camera id="eye">
+                <a-cursor></a-cursor>
+            </a-camera>
+            
+            <!-- Hands -->
+            <a-entity laser-controls="hand: left; color: red;"></a-entity> 
+        </a-entity> 
 
         <!-- Custom Lighting: Ambient + Directional -->
         <a-entity light="intensity: 0.1; castShadow: true" position="-0.5 1 1" data-aframe-default-light="" aframe-injected=""></a-entity>
@@ -59,24 +113,10 @@
         ></a-entity>
 
         <!-- Skies? -->
-        <a-sky color="#000"></a-sky>
+        <a-sky src="assets/img/another_sky.jpg"></a-sky>
 
         <!-- Floor and stuff -->
         <a-entity>
-            <!-- Floor down -->
-            <a-plane
-                static-body
-                position="12 0 -17" 
-                rotation="-90 0 0" 
-                width="30" 
-                height="30" 
-                
-                src="#floor_base"
-                repeat="30 30"
-                normal-map="#floor_normal"
-                normal-texture-repeat="30 30"
-            ></a-plane>
-
             <!-- Ceiling up -->
             <a-plane
                 static-body
@@ -86,46 +126,6 @@
                 height="30" 
                 color="#7BC8A4"
             ></a-plane>
-            
-            <!-- Wall left -->
-            <!-- <a-plane
-                static-body
-                position="5 2 0" 
-                rotation="0 -90 0" 
-                width="10" 
-                height="4" 
-                color="#7BC8A4"
-            ></a-plane> -->
-            
-            <!-- Wall right -->
-            <!-- <a-plane
-                static-body
-                position="-5 2 0" 
-                rotation="0 90 0" 
-                width="10" 
-                height="4" 
-                color="#7BC8A4"
-            ></a-plane> -->
-
-            <!-- Wall front -->
-            <!-- <a-plane
-                static-body
-                position="0 2 -5" 
-                rotation="0 0 0" 
-                width="10" 
-                height="4" 
-                color="#7BC8A4"
-            ></a-plane>   -->
-
-            <!-- Wall back -->
-            <!-- <a-plane
-                static-body
-                position="0 2 5" 
-                rotation="180 0 0" 
-                width="10" 
-                height="4" 
-                color="#7BC8A4"
-            ></a-plane>  -->
         </a-entity>
         
         <a-entity
@@ -151,14 +151,6 @@
                 position="0 2 0"
             ></a-entity>
         </a-entity>
-
-        <a-entity
-            gltf-model="#asset_generator"
-            scale="0.005 0.005 0.005"
-            rotation="0 -90 0"
-            position="24.5 0 -8"
-            static-body
-        ></a-entity>
 
     </a-scene>
 </body>

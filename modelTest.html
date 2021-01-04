@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Model Test</title>
+
+    <!-- A-Frame lib super-machinery -->
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+    <script src="https://unpkg.com/aframe-event-set-component@4.2.1/dist/aframe-event-set-component.min.js"></script> 
+    <script src="https://unpkg.com/aframe-proxy-event-component/dist/aframe-proxy-event-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script> 
+    <script src="https://cdn.jsdelivr.net/gh/n5ro/aframe-physics-system@v4.0.1/dist/aframe-physics-system.min.js"></script>
+
+    <!-- Suber Hands -->
+    <script src="https://unpkg.com/super-hands@^3.0.1/dist/super-hands.min.js"></script> 
+</head>
+<body>
+    <a-scene>
+        <a-gltf-model src="assets/model/generator/scene.gltf" scale=".01 .01 .01" position="0 0 -3"></a-gltf-model>
+        <a-gltf-model src="assets/model/jerry_can/scene.gltf" scale=".05 .05 .05" position="-3 0 -3"></a-gltf-model>
+        
+        <!-- Hands -->
+        <a-entity laser-controls="hand: left; color: red;"></a-entity>  
+
+        <a-entity>
+            <a-entity geometry="" position="-2 2 0.25" scale="2 4 0.5"></a-entity>
+            <a-entity geometry="" position="-2 2 1.75" scale="2 4 0.5"></a-entity>
+            <a-entity geometry="" position="-2 3 1" scale="2 2 1"></a-entity>
+            <a-entity geometry="" position="-2 1 1" scale="0.6 2 1"></a-entity>
+        </a-entity>
+
+    </a-scene>
+</body>
+</html>

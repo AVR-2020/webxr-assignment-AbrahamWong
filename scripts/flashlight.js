@@ -31,11 +31,12 @@ AFRAME.registerComponent('flashlight', {
         let el = this.el;
         if (data.grabbed) {
             let camera = document.querySelector("#camera");
-            let cameraRotation = camera.getAttribute("rotation");
+            let eye = document.querySelector("#eye");
+            let eyeRotation = eye.getAttribute("rotation");
             let cameraPosition = camera.getAttribute("position");
 
-            el.setAttribute('rotation', `${-90 + cameraRotation.x} ${cameraRotation.y} ${cameraRotation.z}`);
-            el.setAttribute('position', `${cameraPosition.x} ${cameraPosition.y - 0.3} ${cameraPosition.z - .1}`);
+            el.setAttribute('rotation', `${-90 + eyeRotation.x} ${eyeRotation.y} ${eyeRotation.z}`);
+            el.setAttribute('position', `${cameraPosition.x} ${cameraPosition.y + 1.4} ${cameraPosition.z}`);
         }
     }
 });
