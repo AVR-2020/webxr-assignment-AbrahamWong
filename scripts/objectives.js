@@ -16,13 +16,19 @@ AFRAME.registerComponent('objectives', {
                 case "toolbox":
                     envData.toolboxLeft -= 1;
                     console.log(envData);
-                    el.remove();
+                    el.components.sound.playSound();
+                    this.spawnText(envData.toolboxLeft, "objT");
+
+                    setTimeout(() => {el.remove() }, 1000);
                     break;
 
                 case "jerrycan":
                     envData.jerryCanLeft -= 1;
                     console.log(envData);
-                    el.remove();
+                    el.components.sound.playSound();
+                    this.spawnText(envData.jerryCanLeft, "objJ");
+
+                    setTimeout(() => {el.remove() }, 1000);
                     break;
 
                 case "generator":
@@ -30,6 +36,7 @@ AFRAME.registerComponent('objectives', {
                     if (envData.toolboxLeft == 0 && envData.jerryCanLeft == 0) {
                         // Fix the generator, set the boolean to TRUE
                         envData.generatorFixed = true;
+                        el.components.sound.playSound();
 
                         // Tell the player to click the gate to finish the game
                         var alertF = document.createElement("a-entity");
@@ -41,6 +48,12 @@ AFRAME.registerComponent('objectives', {
                         alertF.setAttribute("position", "0 90 55");
                         ev.srcElement.appendChild(alertF);
 
+                        // Set light to be more bright
+                        var lightD = document.querySelector("#directional_light");
+                        var lightA = document.querySelector("#ambient_light")
+
+                        lightD.setAttribute("light", "intensity: 0.6; castShadow: true");
+                        lightA.setAttribute("light", "intensity: 0.6 color: #BBB; type: ambient");
                         setTimeout(_ => {alertF.remove()}, 3000);
 
                     } else if (envData.toolboxLeft != 0) {
@@ -81,10 +94,38 @@ AFRAME.registerComponent('objectives', {
                         var camera = document.querySelector("#camera");
 
                         camera.setAttribute("position", "-8 4 -8");
-                        console.log(`Start: ${envData.timeStart}\nFinish: ${envData.timeFinish}\nDur: ${timeToFinish} sec`)
+                        console.log(`Start: ${envData.timeStart}\nFinish: ${envData.timeFinish}\nDur: ${timeToFinish} sec`);
+
+                        this.spawnText(timeToFinish, "time");
+
+                        // Epic victory royale music
+                        var winning = document.querySelector("#win_s");
+                        winning.components.sound.playSound();
                     }
                     break;
             }
         })
+    }, 
+
+    spawnText: function(msg, format) {
+        var eye = document.querySelector("#eye");
+        var text = document.createElement("a-entity");
+
+        if (format == "time") {
+            text.setAttribute("text", `value: You did it! You escaped the facility!\nTime: ${msg} second; width: 2; align: center;`);
+            text.setAttribute("position", "0 -0.65 -1");
+            eye.appendChild(text);
+        } else if (format == "objT") {
+            text.setAttribute("text", `value: You collected a toolbox!\n${msg != 0? msg : "No toolbox"} remaining; width: 2; align: center;`);
+            text.setAttribute("position", "0 -0.65 -1");
+            eye.appendChild(text);
+            setTimeout(_ => {text.remove()}, 2000);
+        } else if (format == "objJ") {
+            text.setAttribute("text", `value: You collected a jerrycan!\n${msg != 0? msg : "No jerrycan"} remaining; width: 2; align: center;`);
+            text.setAttribute("position", "0 -0.65 -1");
+            eye.appendChild(text);
+            setTimeout(_ => {text.remove()}, 2000);
+        }
+        
     }
 });

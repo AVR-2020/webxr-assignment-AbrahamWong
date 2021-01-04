@@ -34,7 +34,7 @@ var roomLayout =
 var roomDebug = [
     ["X", "G", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X", "X"],
     ["X", "F", "C", "X", "X", "X", "X", "X", "O", "O", "O", "O", "O", "O", "X"],
-    ["X", "O", "O", "O", "O", "O", "O", "X", "O", "X", "X", "O", "X", "O", "X"],
+    ["X", "O", "B", "O", "O", "O", "O", "X", "O", "X", "X", "O", "X", "O", "X"],
     ["X", "X", "S", "X", "X", "X", "O", "X", "O", "O", "X", "O", "X", "O", "X"],
     ["X", "A", "O", "X", "O", "O", "O", "O", "O", "X", "X", "X", "X", "X", "X"],
     ["X", "X", "X", "X", "X", "X", "X", "X", "O", "O", "O", "O", "X", "X", "X"],
@@ -131,6 +131,7 @@ AFRAME.registerComponent("game_enviroment", {
                             gate.setAttribute("id", "gatedoor");
                             gate.setAttribute("objectives", "objName: exit");
                             gate.setAttribute("position", `${coord_x} 1 ${coord_z}`);
+                            gate.setAttribute("material", "src: #exit_gate");
                             entity.appendChild(gate);
 
                             entity.setAttribute("id", "test_gate");
@@ -138,6 +139,8 @@ AFRAME.registerComponent("game_enviroment", {
 
                             this.createFloor(coord_x, coord_z, data.wallLength, data.wallWidth);
                             break;
+
+                        // Objectives
                         case "A":
                             this.createFloor(coord_x, coord_z, data.wallLength, data.wallWidth);
                             
@@ -150,6 +153,7 @@ AFRAME.registerComponent("game_enviroment", {
                             entityT.setAttribute("gltf-model", "#asset_toolbox");
                             entityT.setAttribute("dynamic-body", "");
                             entityT.setAttribute("light", "distance: 2; intensity: 2; type: point;");
+                            entityT.setAttribute("sound", "src: #audio_toolbox; autoplay: false; volume: 2;");
                             
                             scene.appendChild(entityT);
                             data.toolboxLeft += 1;
@@ -164,8 +168,10 @@ AFRAME.registerComponent("game_enviroment", {
                             entityJ.setAttribute("gltf-model", "#asset_jerry_can");
                             entityJ.setAttribute("scale", "0.05 0.05 0.05");
                             entityJ.setAttribute("position", `${coord_x} 0.5 ${coord_z}`);
+                            entityJ.setAttribute("rotation", "90 0 0");
                             entityJ.setAttribute("dynamic-body", "");
-                            entityJ.setAttribute("light", "distance: 2; intensity: 1; type: point;");
+                            entityJ.setAttribute("light", "distance: 2; intensity: 2; type: point;");
+                            entityJ.setAttribute("sound", "src: #audio_jerrycan; autoplay: false; volume: 2;");
 
                             scene.appendChild(entityJ);
                             data.jerryCanLeft += 1;
@@ -183,6 +189,7 @@ AFRAME.registerComponent("game_enviroment", {
                             entityG.setAttribute("rotation", `0 -90 0`);
                             entityG.setAttribute("static-body", "");
                             entityG.setAttribute("light", "distance: 4; intensity: 1; type: point;");
+                            entityG.setAttribute("sound", "src: #audio_generator; autoplay: false; volume: 2;");
 
                             scene.appendChild(entityG);
                             data.generatorFixed = false;

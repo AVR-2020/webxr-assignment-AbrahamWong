@@ -55,37 +55,45 @@
 
     <a-scene id="scene" physics>
         <a-asset>
+            <!-- GLTF models -->
             <a-asset-item id="asset_flashlight" src="assets/model/simple_lowpoly_flashlight/scene.gltf"></a-asset-item>
             <a-asset-item id="asset_jerry_can" src="assets/model/jerry_can/scene.gltf"></a-asset-item>
             <a-asset-item id="asset_generator" src="assets/model/generator/scene.gltf"></a-asset-item>
             <a-asset-item id="asset_toolbox" src="assets/model/old_tool_box/scene.gltf"></a-asset-item>
 
+            <!-- Img for wall and floor -->
             <img src="assets/img/test_wall.png" id="wall">
-            
             <img src="assets/img/floor/mosaic-floor.jpg" id="mosaic_floor">
+            <img src="assets/img/gate.jpg" id="exit_gate">
             
-            <!-- Gate -->
-                <!-- Side -->
+            <!-- Mixin: Gate -->
+            <!-- Side -->
             <a-mixin
                 id="gate_side"
                 geometry="" 
                 scale="0.5 4 2"
             ></a-mixin>
 
-                <!-- Up -->
+            <!-- Up -->
             <a-mixin
                 id="gate_up"
                 geometry="" 
                 scale="1 2 2"
             ></a-mixin>
 
-                <!-- The gate -->
+            <!-- The gate -->
             <a-mixin 
                 id="gate_door" 
                 geometry="" 
                 scale="1 2 0.6"
             ></a-mixin>
 
+            <!-- Audio -->
+            <audio id="audio_env" src="assets/sound/243925_creepy_ambient_noises.wav" preload="auto" ></audio>
+            <audio id="audio_toolbox" src="assets/sound/135858_tool_box_clutt_003.wav" preload="auto" ></audio>
+            <audio id="audio_jerrycan" src="assets/sound/194914_paint_can_shake.wav" preload="auto" ></audio>
+            <audio id="audio_generator" src="assets/sound/461704_generator_running.wav" preload="auto" ></audio>
+            <audio id="audio_win" src="assets/sound/387232_badge_coin_win.wav" preload="auto" ></audio>
         </a-asset>
 
         <a-entity 
@@ -93,6 +101,7 @@
             navlog 
             movement-controls="controls: checkpoint;" 
             checkpoint-controls="mode: animate; animateSpeed: 5;"
+            sound="src: #audio_env; autoplay: true; loop: true;"
             >
             <a-camera id="eye">
                 <a-cursor></a-cursor>
@@ -100,11 +109,14 @@
             
             <!-- Hands -->
             <a-entity laser-controls="hand: left; color: red;"></a-entity> 
+
+            <!-- Winning Musik -->
+            <a-entity id="win_s" sound="src: #audio_env; autoplay: false;"></a-entity>
         </a-entity> 
 
         <!-- Custom Lighting: Ambient + Directional -->
-        <a-entity light="intensity: 0.1; castShadow: true" position="-0.5 1 1" data-aframe-default-light="" aframe-injected=""></a-entity>
-        <a-entity light="intensity: 0.1 color: #BBB; type: ambient" data-aframe-default-light="" aframe-injected=""></a-entity>
+        <a-entity id="directional_light" light="intensity: 0.25; castShadow: true" position="0 1 0" data-aframe-default-light="" aframe-injected=""></a-entity>
+        <a-entity id="ambient_light" light="intensity: 0.1 color: #BBB; type: ambient" data-aframe-default-light="" aframe-injected=""></a-entity>
 
         <!-- Walls? -->
         <a-entity
