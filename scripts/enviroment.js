@@ -69,7 +69,7 @@ AFRAME.registerComponent("game_enviroment", {
         console.log(`${data.wallLength}, ${data.wallHeight}, ${data.wallWidth}`)
 
         try {
-            roomDebug.forEach((arrayElement, arrayIndex) => {
+            roomLayout.forEach((arrayElement, arrayIndex) => {
                 var coord_z = (arrayIndex - arrayElement.length) * data.wallWidth;
 
                 arrayElement.forEach((element, index) => {
